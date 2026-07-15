@@ -43,7 +43,7 @@ python -m pip install -r requirements.txt
 Los pesos se distribuyen desde GitHub Releases:
 
 ```bash
-python scripts/download_models.py --url URL_DEL_ASSET --sha256 SHA256_DEL_ASSET
+python scripts/download_models.py --url https://github.com/carlos26gq-coder/RetinAI/releases/download/v1.0.0/retinai_models_v1.0.0.zip --sha256 SHA256_DEL_ASSET
 ```
 
 Verificación:
