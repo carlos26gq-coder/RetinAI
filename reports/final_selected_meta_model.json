@@ -1,0 +1,29 @@
+{
+  "applied": true,
+  "selected_meta_model": "xgboost",
+  "threshold": 0.37983638048171997,
+  "summary": {
+    "meta_model": "xgboost",
+    "mode": "nested",
+    "threshold_oof": 0.37983638048171997,
+    "oof_accuracy_percent": 84.65045592705167,
+    "oof_sensitivity_percent": 88.2183908045977,
+    "oof_specificity_percent": 80.64516129032258,
+    "oof_f1_percent": 85.87412587412587,
+    "oof_auc_percent": 91.61846496106784,
+    "oof_fn": 41,
+    "test_accuracy_percent": 84.75894245723173,
+    "test_sensitivity_percent": 89.19753086419753,
+    "test_specificity_percent": 80.25078369905955,
+    "test_precision_percent": 82.10227272727273,
+    "test_f1_percent": 85.50295857988166,
+    "test_auc_percent": 92.91284492433917,
+    "test_tp": 289,
+    "test_tn": 256,
+    "test_fp": 63,
+    "test_fn": 35,
+    "test_sensitivity_ci95": "[85.35, 92.13]",
+    "test_specificity_ci95": "[75.53, 84.25]",
+    "test_auc_ci95": "[90.94, 94.76]"
+  }
+}

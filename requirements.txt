@@ -1,0 +1,23 @@
+# PyTorch se instala por separado para elegir CPU o CUDA.
+numpy==2.0.2
+pandas==2.3.3
+scikit-learn==1.6.1
+joblib==1.5.3
+xgboost==3.2.0
+scipy
+Pillow
+opencv-python-headless
+albumentations
+scikit-image
+timm
+segmentation-models-pytorch
+matplotlib
+seaborn
+plotly
+fastapi
+uvicorn
+python-multipart
+streamlit
+requests
+PyYAML
+tqdm

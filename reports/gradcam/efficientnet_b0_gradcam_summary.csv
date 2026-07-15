@@ -1,0 +1,7 @@
+model,image_path,output_gradcam,true_label,true_class,predicted_label,predicted_class,prob_healthy,prob_exudates,correct
+efficientnet_b0,data\raw\healthy\17295_left-600.jpg,reports\gradcam\efficientnet_b0_healthy_17295_left-600_gradcam.png,0,healthy,0,healthy,0.8175328373908997,0.18246720731258392,1
+efficientnet_b0,data\raw\healthy\22503_right-600.jpg,reports\gradcam\efficientnet_b0_healthy_22503_right-600_gradcam.png,0,healthy,0,healthy,0.7812389731407166,0.21876107156276703,1
+efficientnet_b0,data\raw\healthy\13361_left-600.jpg,reports\gradcam\efficientnet_b0_healthy_13361_left-600_gradcam.png,0,healthy,0,healthy,0.5807347893714905,0.4192653000354767,1
+efficientnet_b0,data\raw\exudates\36166_left-600-HF.jpg,reports\gradcam\efficientnet_b0_exudates_36166_left-600-HF_gradcam.png,1,exudates,1,exudates,0.2794063091278076,0.7205936908721924,1
+efficientnet_b0,data\raw\exudates\35789_right-600-HF.jpg,reports\gradcam\efficientnet_b0_exudates_35789_right-600-HF_gradcam.png,1,exudates,1,exudates,0.4344368875026703,0.5655630826950073,1
+efficientnet_b0,data\raw\exudates\36184_left-600-FA.jpg,reports\gradcam\efficientnet_b0_exudates_36184_left-600-FA_gradcam.png,1,exudates,1,exudates,0.3581036329269409,0.6418963074684143,1

@@ -1,0 +1,313 @@
+project:
+  name: RetinAI_MVP
+  version: 2.0.0
+  seed: 42
+  description: Modelo ensemble stacking multimodal para detección temprana de exudados
+    retinales mediante modelos retinales, CNNs profundas, atención espacial, mapas
+    candidatos y características radiomics.
+data:
+  raw_dir: data/raw
+  image_size: 224
+  classes:
+  - healthy
+  - exudates
+  val_split: 0.15
+  test_split: 0.15
+  group_by_patient: true
+  allowed_extensions:
+  - .jpg
+  - .jpeg
+  - .png
+  - .bmp
+  - .tif
+  - .tiff
+paths:
+  weights_dir: models/weights
+  meta_dir: models/meta
+  figures_dir: reports/figures
+  reports_dir: reports
+  foundation_dir: models/foundation
+  feature_cache_dir: data/processed/features
+  radiomics_dir: data/processed/radiomics
+hardware:
+  device: auto
+  mixed_precision: true
+  use_multi_gpu: false
+training:
+  batch_size: 16
+  num_workers: 2
+  epochs_base: 15
+  learning_rate: 0.0002
+  weight_decay: 0.0001
+  early_stopping_patience: 5
+  early_stopping_min_delta: 0.001
+  lr_scheduler:
+    factor: 0.5
+    patience: 2
+  save_best_only: true
+  monitor_metric: val_loss
+augmentation:
+  horizontal_flip: true
+  vertical_flip: false
+  rotation_limit: 20
+  brightness_contrast: true
+  gaussian_noise: true
+  elastic_transform: false
+  normalize_imagenet: true
+branch_preprocessing:
+  rgb:
+    enabled: true
+    description: Imagen RGB original.
+  rgb_highres:
+    enabled: true
+    description: Imagen RGB de mayor resolución para lesiones pequeñas.
+  clahe_green:
+    enabled: true
+    clahe_clip_limit: 2.0
+    clahe_tile_grid_size: 8
+    description: Canal verde con CLAHE para mejorar contraste local.
+  rgb_clahe:
+    enabled: true
+    clahe_clip_limit: 2.0
+    clahe_tile_grid_size: 8
+    description: RGB con realce CLAHE para análisis de atención.
+  inception_rgb:
+    enabled: true
+    description: RGB redimensionado a 299x299 para Inception-v3.
+  candidate_mask:
+    enabled: true
+    use_green_channel: true
+    use_clahe: true
+    use_tophat: true
+    threshold_method: otsu
+    morphology_kernel_size: 5
+    description: Máscara candidata de regiones brillantes compatibles con exudados.
+  exudate_map:
+    enabled: true
+    use_hsv_yellow: true
+    use_brightness: true
+    use_green_blue_contrast: true
+    use_morphology: true
+    morphology_kernel_size: 5
+    description: Mapa focalizado en brillo, color amarillento y contraste de posibles
+      exudados.
+  retfound_rgb:
+    enabled: true
+    description: RGB adaptado para modelo fundacional retinal RETFound.
+  retclip_rgb:
+    enabled: false
+    description: RGB adaptado para encoder visual RET-CLIP. Activar cuando estén integrados
+      los pesos.
+base_models:
+- name: retfound
+  enabled: false
+  type: foundation
+  source: retfound
+  pretrained: true
+  freeze_backbone: true
+  input_mode: retfound_rgb
+  image_size: 224
+  weights_path: models/foundation/retfound_cfp.pth
+  output_features: true
+  output_probability: true
+  description: Modelo fundacional retinal preentrenado con imágenes de fondo de ojo.
+    Se activará cuando se integren los pesos oficiales.
+- name: retclip
+  enabled: false
+  type: foundation
+  source: retclip
+  pretrained: true
+  freeze_backbone: true
+  input_mode: retclip_rgb
+  image_size: 224
+  weights_path: models/foundation/retclip_image_encoder.pth
+  output_features: true
+  output_probability: true
+  description: Encoder visual retinal imagen-texto. Se activará cuando se integren
+    los pesos.
+- name: efficientnet_b0
+  enabled: true
+  type: cnn
+  source: torchvision
+  pretrained: true
+  freeze_backbone: true
+  input_mode: rgb
+  image_size: 224
+  output_features: false
+  output_probability: true
+  description: Clasificador global eficiente sobre imagen RGB original.
+- name: efficientnet_b3
+  enabled: true
+  type: cnn
+  source: timm
+  pretrained: true
+  freeze_backbone: true
+  input_mode: rgb_highres
+  image_size: 300
+  output_features: false
+  output_probability: true
+  description: Modelo de mayor resolución para detección de detalles finos y lesiones
+    pequeñas.
+- name: densenet121
+  enabled: true
+  type: cnn
+  source: torchvision
+  pretrained: true
+  freeze_backbone: true
+  input_mode: clahe_green
+  image_size: 224
+  output_features: false
+  output_probability: true
+  description: Rama orientada a textura fina, contraste local y canal verde.
+- name: inception_v3
+  enabled: true
+  type: cnn
+  source: torchvision
+  pretrained: true
+  freeze_backbone: true
+  input_mode: inception_rgb
+  image_size: 299
+  output_features: false
+  output_probability: true
+  description: Rama multi-escala para lesiones pequeñas, medianas y patrones distribuidos.
+- name: resnet50_cbam
+  enabled: true
+  type: attention_cnn
+  source: torchvision_custom
+  pretrained: true
+  freeze_backbone: true
+  input_mode: rgb_clahe
+  image_size: 224
+  output_features: false
+  output_probability: true
+  attention_module: cbam
+  description: ResNet50 con módulo CBAM para atención de canal y atención espacial.
+- name: unet_encoder
+  enabled: true
+  type: segmentation_encoder
+  source: segmentation_models_pytorch
+  pretrained: true
+  freeze_backbone: true
+  input_mode: candidate_mask
+  image_size: 224
+  encoder_name: resnet34
+  encoder_weights: imagenet
+  output_features: false
+  output_probability: true
+  description: Encoder tipo U-Net orientado a regiones candidatas compatibles con
+    exudados.
+- name: mobilenetv3_exudate_map
+  enabled: true
+  type: cnn
+  source: torchvision
+  pretrained: true
+  freeze_backbone: true
+  input_mode: exudate_map
+  image_size: 224
+  output_features: false
+  output_probability: true
+  description: Rama ligera enfocada en mapa candidato de exudados por brillo, color
+    y morfología.
+radiomics:
+  enabled: true
+  color_features: true
+  texture_features: true
+  morphology_features: true
+  spatial_features: true
+  color:
+    rgb_statistics: true
+    hsv_statistics: true
+    lab_statistics: true
+    yellow_pixel_ratio: true
+    bright_pixel_ratio: true
+    green_blue_contrast: true
+  texture:
+    lbp: true
+    gabor: true
+    entropy: true
+    contrast: true
+    homogeneity: true
+    energy: true
+  morphology:
+    candidate_regions: true
+    total_candidate_area: true
+    mean_candidate_area: true
+    max_candidate_area: true
+    candidate_area_ratio: true
+    compactness: true
+    eccentricity: true
+    solidity: true
+  spatial:
+    central_region_ratio: true
+    peripheral_region_ratio: true
+    superior_inferior_ratio: true
+    left_right_ratio: true
+    lesion_distance_to_center: true
+meta_model:
+  type: xgboost
+  oof_splits: 5
+  use_base_probabilities: true
+  use_base_logits: false
+  use_model_confidence: true
+  use_radiomics_features: true
+  threshold_strategy: youden
+  xgboost:
+    n_estimators: 200
+    max_depth: 3
+    learning_rate: 0.03
+    subsample: 0.85
+    colsample_bytree: 0.85
+    eval_metric: logloss
+    n_jobs: -1
+    random_state: 42
+  random_forest:
+    n_estimators: 200
+    max_depth: 6
+    min_samples_split: 4
+    n_jobs: -1
+    random_state: 42
+  logistic_regression:
+    C: 1.0
+    max_iter: 2000
+    solver: lbfgs
+    random_state: 42
+metrics:
+  clinical_metrics: true
+  bootstrap_auc: true
+  bootstrap_iterations: 1000
+  confidence_interval: 0.95
+  save_confusion_matrix: true
+  save_roc_curve: true
+  save_precision_recall_curve: true
+  save_training_history: true
+api:
+  host: 127.0.0.1
+  port: 8000
+  max_file_size_mb: 10
+  allowed_extensions:
+  - .jpg
+  - .jpeg
+  - .png
+  - .bmp
+  - .tif
+  - .tiff
+inference:
+  default_threshold: 0.5
+  save_uploaded_images: false
+  risk_levels:
+    low:
+      label: Bajo
+      min_probability: 0.0
+      max_probability: 0.39
+    moderate:
+      label: Moderado
+      min_probability: 0.4
+      max_probability: 0.69
+    high:
+      label: Alto
+      min_probability: 0.7
+      max_probability: 1.0
+mlflow:
+  enabled: false
+  tracking_uri: mlruns
+  experiment_name: retinopathy_multimodal_ensemble_stacking

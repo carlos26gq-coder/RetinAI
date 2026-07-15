@@ -1,0 +1,11 @@
+python: 3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]
+torch: 2.10.0+cu128
+torchvision: 0.25.0+cu128
+cuda_available: True
+cuda_device: Tesla T4
+cuda_count: 2
+sklearn: 1.6.1
+xgboost: 3.2.0
+joblib: 1.5.3
+numpy: 2.0.2
+pandas: 2.3.3

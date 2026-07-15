@@ -1,0 +1,7 @@
+model,image_path,output_gradcam,true_label,true_class,predicted_label,predicted_class,prob_healthy,prob_exudates,correct
+densenet121,data\raw\healthy\17295_left-600.jpg,reports\gradcam\densenet121_healthy_17295_left-600_gradcam.png,0,healthy,0,healthy,0.5183234810829163,0.4816766083240509,1
+densenet121,data\raw\healthy\22503_right-600.jpg,reports\gradcam\densenet121_healthy_22503_right-600_gradcam.png,0,healthy,0,healthy,0.7133462429046631,0.2866537570953369,1
+densenet121,data\raw\healthy\13361_left-600.jpg,reports\gradcam\densenet121_healthy_13361_left-600_gradcam.png,0,healthy,0,healthy,0.6584049463272095,0.3415950834751129,1
+densenet121,data\raw\exudates\36166_left-600-HF.jpg,reports\gradcam\densenet121_exudates_36166_left-600-HF_gradcam.png,1,exudates,1,exudates,0.13083530962467194,0.869164764881134,1
+densenet121,data\raw\exudates\35789_right-600-HF.jpg,reports\gradcam\densenet121_exudates_35789_right-600-HF_gradcam.png,1,exudates,1,exudates,0.18274275958538055,0.817257285118103,1
+densenet121,data\raw\exudates\36184_left-600-FA.jpg,reports\gradcam\densenet121_exudates_36184_left-600-FA_gradcam.png,1,exudates,1,exudates,0.3292785584926605,0.6707214713096619,1

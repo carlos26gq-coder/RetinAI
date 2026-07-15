@@ -1,0 +1,4 @@
+Meta-modelo,Accuracy (%),Sensibilidad (%),Especificidad (%),Precisión (%),F1 (%),AUC-ROC (%),TP,TN,FP,FN
+XGBoost,84.76,89.2,80.25,82.1,85.5,92.91,289,256,63,35
+Regresión logística,83.83,89.81,77.74,80.39,84.84,92.74,291,248,71,33
+Extra Trees,84.91,88.58,81.19,82.71,85.54,92.93,287,259,60,37

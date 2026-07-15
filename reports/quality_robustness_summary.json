@@ -1,0 +1,16 @@
+{
+  "threshold": 0.37983638048171997,
+  "n_test": 643,
+  "overall_accuracy": 0.8475894245723172,
+  "files": {
+    "quality_predictions": "C:\\Users\\CGutierrez\\Desktop\\RetinAI_MVP\\reports\\quality_test_predictions.csv",
+    "quality_metrics": "C:\\Users\\CGutierrez\\Desktop\\RetinAI_MVP\\reports\\quality_robustness_metrics.csv",
+    "figures": [
+      "reports/figures/robustness_sensitivity_by_quality.png",
+      "reports/figures/robustness_sensitivity_by_brightness.png",
+      "reports/figures/robustness_sensitivity_by_contrast.png",
+      "reports/figures/robustness_sensitivity_by_sharpness.png",
+      "reports/figures/robustness_false_negatives_by_quality.png"
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs / temporales
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+~$*
+dist/
+build/
+
+# Datos
+data/raw/*
+data/processed/*
+!data/README.md
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Modelos binarios: publicar mediante GitHub Releases
+models/weights/*
+models/meta/*
+models/meta_candidates/*
+models/meta_optimized/*
+!models/README.md
+!models/weights/.gitkeep
+!models/meta/.gitkeep
+
+# Resultados pesados/intermedios
+reports/meta_features_*.csv
+reports/radiomics_*.csv
+reports/*_predictions.csv
+reports/training*.log
+reports/optimized_final_decision_*.csv
+reports/comparison_without_vs_with_stacking.csv
+
+# Backups y utilidades internas no finales
+backup_*/
+app_backup_*.py
+patch_*.py
+prepare_context_for_new_chat.py
+prepare_kaggle_zip.py
+RETINAI_CONTEXTO_NUEVO_CHAT.md
+generate_method_comparison.py
+optimize_final_decision.py
+apply_optimized_threshold.py
+
+# Duplicado accidental
+src/src/
