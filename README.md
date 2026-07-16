@@ -14,15 +14,6 @@ Ensemble Stacking.
 - Meta-modelo final: XGBoost.
 - Umbral final: 0.3798.
 
-## Resultado final
-
-- Conjunto de prueba: 643 imágenes.
-- Accuracy: 84.76 %.
-- Sensibilidad: 89.20 %.
-- Especificidad: 80.25 %.
-- AUC-ROC: 0.9291.
-- TP: 289, TN: 256, FP: 63, FN: 35.
-
 ## Instalación
 
 Se recomienda Python 3.12.
